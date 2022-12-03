@@ -29,7 +29,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/user_api.User"
+                                "$ref": "#/definitions/main.User"
                             }
                         }
                     }
@@ -38,7 +38,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "user_api.User": {
+        "main.User": {
             "type": "object",
             "properties": {
                 "email": {

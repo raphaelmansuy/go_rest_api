@@ -1,14 +1,13 @@
-package main 
+package main
 
 import (
-	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
+	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
-
-	_ "github.com/swaggo/http-swagger/example/docs"
-
-	"github.com/swaggo/http-swagger"
+	_ "github.com/raphaelmansuy/go_rest_api/docs"
 )
 
 // User represents a user in the system.
@@ -26,48 +25,43 @@ var users = []User{
 }
 
 // GetUsers returns a list of all users.
+//
 //	@Summary		Get a list of users
 //	@Description	Returns a list of all users in the system.
 //	@Tags			users
 //	@Success		200	{array}	User
 //	@Router			/users [get]
-func getUsers(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(users)
+func getUsers(c *gin.Context) {
+	c.JSON(http.StatusOK, users)
 }
 
-//	@title			My SimpleAPI
-//	@version		1.0
-//	@description	This is a simple API for managing users.
-//	@termsOfService	http://swagger.io/terms/
-//	@contact.name	Jane Doe
-//	@contact.email	jane.doe@example.com
-//	@license.name	Apache 2.0
-//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
-//	@host			localhost:8080
-//	@BasePath		/
+// @title			My Simple REST API
+// @version		1.0
+// @description	This is a simple API for managing users.
+// @termsOfService	http://swagger.io/terms/
+// @contact.name	Jane Doe
+// @contact.email	jane.doe@example.com
+// @license.name	Apache 2.0
+// @license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+// @host			localhost:8080
+// @BasePath		/
 func main() {
-	r := mux.NewRouter()
-
-	
-	r.HandleFunc("/users", getUsers).Methods("GET")
-
-	// Serve the API documentation at the "/docs" endpoint using the Swagger 2.0 format.
-	// The Swagger 2.0 specification is available at https://swagger.io/specification/v2/.
-	// The local directory "docs" contains the Swagger UI files.
-	// docs contains swagger.json and swagger.yaml and docs.go
+	r := gin.Default()
 
 
-	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
+	r.GET("/users", getUsers)
 
+	// docs route
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 
 
 	log.Println("🚀 Simple service is starting on http://localhost:8080/ ...")
 	log.Println("🚀 Simple service is ready to handle requests at http://localhost:8080/")
 	// print how to access the Swagger UI
-	log.Println("👉 You can access the Swagger UI at http://localhost:8080/documentation/")
+	log.Println("👉 You can access the Swagger UI at http://localhost:8080/docs/")
 
 	// start the server
-	log.Fatal(http.ListenAndServe(":8080", r))
+	r.Run(":8080")
 
 }

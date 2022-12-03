@@ -1,5 +1,5 @@
 definitions:
-  user_api.User:
+  main.User:
     properties:
       email:
         type: string
@@ -21,7 +21,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/user_api.User'
+              $ref: '#/definitions/main.User'
             type: array
       summary: Get a list of users
       tags:

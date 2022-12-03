@@ -1,0 +1,7 @@
+# This is a comment
+
+# Ignore all files in the bin directory
+bin/
+
+# Ignore all files ending in ".a"
+*.a

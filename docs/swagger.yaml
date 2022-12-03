@@ -26,4 +26,25 @@ paths:
       summary: Get a list of users
       tags:
       - users
+    post:
+      consumes:
+      - application/json
+      description: Add a new user to the system
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/main.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.User'
+      summary: Add a new user
+      tags:
+      - users
 swagger: "2.0"

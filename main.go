@@ -39,6 +39,38 @@ func getUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+ 
+// addUser adds a new user to the in-memory store of users.
+// PostUser add a user to the list
+// @Summary		Add a new user
+// @Description	Add a new user to the system
+// @Tags		users
+// @Accept		json
+// @Produce		json
+// @Param		user		body	User	true	"User object"
+// @Success		201	{object}	User
+// @Router		/users [post]
+func addUser(c *gin.Context) {
+	// create a new user object
+	var user User
+
+	// bind the user object to the request body
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// generate a unique ID for the user
+	user.ID = len(users) + 1
+
+	// add the user to the in-memory store
+	users = append(users, user)
+
+	// return the newly created user
+	c.JSON(http.StatusCreated, user)
+}
+
+
 // @title			A simple REST API
 // @version		1.0
 // @description	This is a simple API for managing users.
@@ -59,6 +91,7 @@ func main() {
 	}
 
 	r.GET("/users", getUsers)
+	r.POST("/users", addUser)
 
 	endpointUrl := fmt.Sprintf("http://localhost:%s", port)
 

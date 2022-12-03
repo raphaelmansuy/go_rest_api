@@ -1,0 +1,29 @@
+definitions:
+  user_api.User:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      description: Returns a list of all users in the system.
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user_api.User'
+            type: array
+      summary: Get a list of users
+      tags:
+      - users
+swagger: "2.0"

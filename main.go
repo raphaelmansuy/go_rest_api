@@ -1,13 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
+
 	"github.com/gin-gonic/gin"
 
+	"net/http"
+
+	_ "github.com/raphaelmansuy/go_rest_api/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"net/http"
-	_ "github.com/raphaelmansuy/go_rest_api/docs"
 )
 
 // User represents a user in the system.
@@ -35,7 +39,7 @@ func getUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// @title			My Simple REST API
+// @title			A simple REST API
 // @version		1.0
 // @description	This is a simple API for managing users.
 // @termsOfService	http://swagger.io/terms/
@@ -48,20 +52,28 @@ func getUsers(c *gin.Context) {
 func main() {
 	r := gin.Default()
 
+	var port = os.Getenv("PORT")
+
+	if port == "" {
+		port = "8080"
+	}
 
 	r.GET("/users", getUsers)
 
+	endpointUrl := fmt.Sprintf("http://localhost:%s", port)
+
 	// docs route
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// add swagger middleware
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-
-	log.Println("🚀 Simple service is starting on http://localhost:8080/ ...")
-	log.Println("🚀 Simple service is ready to handle requests at http://localhost:8080/")
+	log.Println("🚀 Simple service is starting on port " + port)
+	// inter
+	log.Println(fmt.Sprintf("✅ Simple service is ready to handle requests at %s", endpointUrl))
 	// print how to access the Swagger UI
-	log.Println("👉 You can access the Swagger UI at http://localhost:8080/docs/")
+	log.Println(fmt.Sprintf("👉 You can access the Swagger UI at %s/swagger/", endpointUrl))
 
 	// start the server
-	r.Run(":8080")
+	r.Run(":" + port)
 
 }

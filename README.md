@@ -14,15 +14,7 @@ go build main.go
 
 ## What does it do?
 
-This code defines a simple web server in Go that listens on port 8080 for incoming HTTP requests. When a request is received at the root URL /, the helloWorldHandler function is called, which writes the string "Hello World!" to the response.
-
-The code also registers a handler for the /swagger/ URL path prefix, which serves the Swagger UI, an interactive documentation and testing tool for APIs. The Swagger UI is served using the http-swagger package, which is an open-source package for integrating Swagger with the Go programming language.
-
-The main function uses the mux package to create a new router and register the helloWorldHandler and http-swagger handlers with it. The router is then used to listen for incoming requests and handle them appropriately.
-
-Overall, this code provides a simple example of how to create a web server in Go and serve the Swagger UI to provide API documentation and testing.
-
-## How to use
+This code is a simple Go program that defines a struct to represent a user and uses the gin library to define a simple REST API for managing users. The code defines a GET route at /users that returns a list of all users. The code also uses the swaggo library to add Swagger documentation to the API. When the program is run, it listens for HTTP requests on port 8080 and logs messages to the console.## How to use
 
 ### Swagger UI
 
@@ -30,7 +22,7 @@ The Swagger UI is served at the /swagger/ URL path prefix. For example, if the s
 
 ### API
 
-The API is served at the /api/ URL path prefix. For example, if the server is running on localhost, you can access the API at http://localhost:8080/api/.
+The API is served at the / URL path prefix. For example, if the server is running on localhost, you can access the API at http://localhost:8080/.
 
 ## How to test
 
@@ -44,7 +36,7 @@ You can also test the API by sending HTTP requests directly to the API endpoints
 
 ```bash
 
-curl http://localhost:8080/api/hello
+curl http://localhost:8080/users
 
 ```
 
